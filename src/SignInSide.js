@@ -12,8 +12,8 @@ import Grid from '@mui/material/Grid';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
-//import THRIVELogo from './thrivelogo191x176.png';
-import THRIVELogo from './TP_logo_trans.png';
+import THRIVELogo from './thrivelogo191x176.png';
+//import THRIVELogo from './TP_logo_trans.png';
 
 function Copyright(props) {
   return (
