@@ -297,7 +297,7 @@ export default function SignUp() {
                   fullWidth
                   name="password"
                   label="Password"
-                  type="text"
+                  type="password"
                   id="password"
                   
                   autoComplete="new-password"
@@ -312,7 +312,7 @@ export default function SignUp() {
                   fullWidth
                   name="confirmPassword"
                   label="Confirm Password"
-                  type="text"
+                  type="password"
                   id="confirmPassword"
                   autoComplete="new-password"
                   onChange={handleInputChange}
