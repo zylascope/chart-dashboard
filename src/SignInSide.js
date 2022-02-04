@@ -78,7 +78,7 @@ export default function SignInSide() {
 
             <img src={THRIVELogo} alt="THRIVE" style={{marginBottom: 50}}/>
             <Typography component="h1" variant="h5">
-              Sign in
+              Sign in to your account
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
