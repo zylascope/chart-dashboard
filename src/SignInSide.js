@@ -13,6 +13,7 @@ import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 import Typography from '@mui/material/Typography';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 import THRIVELogo from './thrivelogo191x176.png';
+//import THRIVELogo from './TP_logo_trans.png';
 
 function Copyright(props) {
   return (
@@ -77,7 +78,9 @@ export default function SignInSide() {
 
             <img src={THRIVELogo} alt="THRIVE" style={{marginBottom: 50}}/>
             <Typography component="h1" variant="h5">
-              Log In
+
+              Sign in to your account
+
             </Typography>
             <Box component="form" noValidate onSubmit={handleSubmit} sx={{ mt: 1 }}>
               <TextField
