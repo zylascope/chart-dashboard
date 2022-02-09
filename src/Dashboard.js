@@ -292,7 +292,7 @@ function DashboardContent() {
                 <NotificationsIcon />
               </Badge>
             </IconButton> */}
-            THRIVE Platform - V3.0
+            THRIVE Platform - V3.1
           </Toolbar>
         </AppBar>
         <Drawer variant="permanent" open={open}>
