@@ -17,10 +17,19 @@ import InputLabel from "@mui/material/InputLabel";
 import MenuItem from "@mui/material/MenuItem";
 import FormControl from "@mui/material/FormControl";
 import Select from "@mui/material/Select";
-import { FormHelperText, FormLabel, Radio, RadioGroup } from "@mui/material";
+import {
+  Alert,
+  FormHelperText,
+  FormLabel,
+  Radio,
+  RadioGroup,
+  AlertTitle,
+} from "@mui/material";
 import ReCAPTCHA from "react-google-recaptcha";
 import { Recaptcha } from "./Recaptcha";
 import axios from "axios";
+import { Redirect } from "react-router-dom";
+import { SuccessRegister } from "./SuccessRegister";
 //import ReCaptchaV2 from 'react-google-recaptcha';
 
 function Copyright(props) {
@@ -60,9 +69,10 @@ const defaultValues = {
   token: "",
   userName: "",
 };
-export default function SignUp() {
+export default function SignUp(props) {
   const [formValues, setFormValues] = React.useState(defaultValues);
   const [errors, setErrors] = React.useState({});
+  const [success, setSuccess] = React.useState(false);
   // const[isCaptchaVerified, setIsCapthaVerified]= React.useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -106,8 +116,11 @@ export default function SignUp() {
         .then((response) => {
           if (response.data.success) {
             console.log(response.message);
+            setSuccess(true);
           } else {
             console.log("Not registered", response);
+
+            //props.history.push("/login");
             console.log("Not registered error message", response.data.message);
             const errorMessage = response.data.message;
             if (errorMessage.includes("mail")) {
@@ -218,99 +231,108 @@ export default function SignUp() {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <Container component="main" maxWidth="xs">
-        <CssBaseline />
-        <Box
-          sx={{
-            marginTop: 8,
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "center",
-          }}
-        >
-          {/* 
+    <>
+      {success ? (
+        <SuccessRegister
+          email={formValues.email}
+          fullName={formValues.fullName}
+        />
+      ) : (
+        <ThemeProvider theme={theme}>
+          <Container component="main" maxWidth="xs">
+            <CssBaseline />
+            <Box
+              sx={{
+                marginTop: 8,
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+              }}
+            >
+              {/* 
             <Avatar sx={{ m: 1, bgcolor: 'green' }}>
                 <LockOutlinedIcon />
             </Avatar> 
         */}
 
-          <img src={THRIVELogo} alt="THRIVE" style={{ marginBottom: 50 }} />
+              <img src={THRIVELogo} alt="THRIVE" style={{ marginBottom: 50 }} />
 
-          <Typography component="h1" variant="h5">
-            Sign up
-          </Typography>
-          <Box
-            component="form"
-            noValidate
-            onSubmit={handleSubmit}
-            sx={{ mt: 3 }}
-          >
-            <Grid container spacing={2}>
-              <Grid item xs={12} sm={6}>
-                <FormControl fullWidth>
-                  <InputLabel
-                    id="title-select-label"
-                    style={{
-                      color: errors.title ? "#d32f2f" : "rgba(0, 0, 0, 0.6)",
-                    }}
-                  >
-                    Title
-                  </InputLabel>
-                  <Select
-                    labelId="title-select-label"
-                    id="title"
-                    value={formValues.title}
-                    label="Title"
-                    type="text"
-                    name="title"
-                    onChange={handleInputChange}
-                    error={errors.title}
-                  >
-                    <MenuItem value={"Mr"}>Mr</MenuItem>
-                    <MenuItem value={"Mrs"}>Mrs</MenuItem>
-                    <MenuItem value={"Miss"}>Miss</MenuItem>
-                    <MenuItem value={"Ms"}>Ms</MenuItem>
-                    <MenuItem value={"Dr"}>Dr</MenuItem>
-                    <MenuItem value={"Sir"}>Sir</MenuItem>
-                  </Select>
-                  <FormHelperText style={{ color: "#d32f2f" }}>
-                    {errors.title}
-                  </FormHelperText>
-                </FormControl>
-              </Grid>
-              <Grid item xs={12} sm={6}>
-                <TextField
-                  required
-                  fullWidth
-                  id="fullName"
-                  label="Full Name"
-                  name="fullName"
-                  type="text"
-                  value={formValues.fullName}
-                  onChange={handleInputChange}
-                  // error ={!!errors?.temp?.name}
+              <Typography component="h1" variant="h5">
+                Sign up
+              </Typography>
+              <Box
+                component="form"
+                noValidate
+                onSubmit={handleSubmit}
+                sx={{ mt: 3 }}
+              >
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <FormControl fullWidth>
+                      <InputLabel
+                        id="title-select-label"
+                        style={{
+                          color: errors.title
+                            ? "#d32f2f"
+                            : "rgba(0, 0, 0, 0.6)",
+                        }}
+                      >
+                        Title
+                      </InputLabel>
+                      <Select
+                        labelId="title-select-label"
+                        id="title"
+                        value={formValues.title}
+                        label="Title"
+                        type="text"
+                        name="title"
+                        onChange={handleInputChange}
+                        error={errors.title ? true : false}
+                      >
+                        <MenuItem value={"Mr"}>Mr</MenuItem>
+                        <MenuItem value={"Mrs"}>Mrs</MenuItem>
+                        <MenuItem value={"Miss"}>Miss</MenuItem>
+                        <MenuItem value={"Ms"}>Ms</MenuItem>
+                        <MenuItem value={"Dr"}>Dr</MenuItem>
+                        <MenuItem value={"Sir"}>Sir</MenuItem>
+                      </Select>
+                      <FormHelperText style={{ color: "#d32f2f" }}>
+                        {errors.title}
+                      </FormHelperText>
+                    </FormControl>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="fullName"
+                      label="Full Name"
+                      name="fullName"
+                      type="text"
+                      value={formValues.fullName}
+                      onChange={handleInputChange}
+                      // error ={!!errors?.temp?.name}
 
-                  error={errors.fullName}
-                  helperText={errors.fullName}
-                  // onBlur={()=>!!errors?errors.fullName:""}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="email"
-                  label="Email Address"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  onChange={handleInputChange}
-                  error={errors.email}
-                  helperText={errors.email}
-                />
-              </Grid>
-              {/* <Grid item xs={12}>
+                      error={errors.fullName}
+                      helperText={errors.fullName}
+                      // onBlur={()=>!!errors?errors.fullName:""}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="email"
+                      label="Email Address"
+                      name="email"
+                      type="email"
+                      autoComplete="email"
+                      onChange={handleInputChange}
+                      error={errors.email ? true : false}
+                      helperText={errors.email}
+                    />
+                  </Grid>
+                  {/* <Grid item xs={12}>
               <FormControl fullWidth>
                 <InputLabel id="Industry-or-Sector" style={{color:errors.role?"#d32f2f":"rgba(0, 0, 0, 0.6)"}}>Industry or Sector</InputLabel>
                 <Select 
@@ -351,21 +373,22 @@ export default function SignUp() {
                 <FormHelperText style={{color:"#d32f2f"}}>{errors.industryOrSector}</FormHelperText>
                 </FormControl> 
               </Grid>*/}
-              <Grid item xs={12}>
-                <TextField
-                  id="institute-or-organization"
-                  name="instituteOrOrganization"
-                  label="Institute or Organization"
-                  type="text"
-                  fullWidth
-                  required
-                  value={formValues.instituteOrOrganization}
-                  onChange={handleInputChange}
-                  error={errors.instituteOrOrganization}
-                  helperText={errors.instituteOrOrganization}
-                ></TextField>
-              </Grid>
-              {/* <Grid item xs={12}>
+                  <Grid item xs={12}>
+                    <TextField
+                      id="institute-or-organization"
+                      name="instituteOrOrganization"
+                      label="Institute or Organization"
+                      type="text"
+                      fullWidth
+                      required
+                      value={formValues.instituteOrOrganization}
+                      onChange={handleInputChange}
+                      // error={errors.instituteOrOrganization}
+                      error={errors.instituteOrOrganization ? true : false}
+                      helperText={errors.instituteOrOrganization}
+                    ></TextField>
+                  </Grid>
+                  {/* <Grid item xs={12}>
                 <FormControl>
                   <FormLabel style={{color:errors.role?"#d32f2f":"rgba(0, 0, 0, 0.6)"}}>Role:</FormLabel>
                   <FormHelperText style={{color:"#d32f2f"}}>{errors.role}</FormHelperText>
@@ -413,52 +436,55 @@ export default function SignUp() {
                   </RadioGroup>
                 </FormControl>
               </Grid> */}
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="password"
-                  label="Password"
-                  type="password"
-                  id="password"
-                  autoComplete="new-password"
-                  onChange={handleInputChange}
-                  error={errors.password}
-                  helperText={errors.password}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  name="confirmPassword"
-                  label="Confirm Password"
-                  type="password"
-                  id="confirmPassword"
-                  autoComplete="new-password"
-                  onChange={handleInputChange}
-                  error={errors.confirmPassword}
-                  helperText={errors.confirmPassword}
-                />
-              </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  required
-                  fullWidth
-                  id="userName"
-                  label="User Name"
-                  name="userName"
-                  type="text"
-                  value={formValues.userName}
-                  onChange={handleInputChange}
-                  // error ={!!errors?.temp?.name}
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="password"
+                      label="Password"
+                      type="password"
+                      id="password"
+                      autoComplete="new-password"
+                      onChange={handleInputChange}
+                      // error={errors.password}
+                      error={errors.password ? true : false}
+                      helperText={errors.password}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      name="confirmPassword"
+                      label="Confirm Password"
+                      type="password"
+                      id="confirmPassword"
+                      autoComplete="new-password"
+                      onChange={handleInputChange}
+                      // error={errors.confirmPassword}
+                      error={errors.confirmPassword ? true : false}
+                      helperText={errors.confirmPassword}
+                    />
+                  </Grid>
+                  <Grid item xs={12}>
+                    <TextField
+                      required
+                      fullWidth
+                      id="userName"
+                      label="User Name"
+                      name="userName"
+                      type="text"
+                      value={formValues.userName}
+                      onChange={handleInputChange}
+                      // error ={!!errors?.temp?.name}
 
-                  error={errors.userName}
-                  helperText={errors.userName}
-                  // onBlur={()=>!!errors?errors.fullName:""}
-                />
-              </Grid>
-              {/*
+                      // error={errors.userName}
+                      error={errors.userName ? true : false}
+                      helperText={errors.userName}
+                      // onBlur={()=>!!errors?errors.fullName:""}
+                    />
+                  </Grid>
+                  {/*
               <Grid item xs={12}>
                 <FormControlLabel
                   control={<Checkbox value="allowExtraEmails" color="primary" />}
@@ -466,47 +492,49 @@ export default function SignUp() {
                 />
               </Grid> 
             */}
-            </Grid>
+                </Grid>
 
-            <Grid item xs={12} marginTop="20px">
-              {/* <ReCaptchaV2 }
+                <Grid item xs={12} marginTop="20px">
+                  {/* <ReCaptchaV2 }
             sitekey={process.env.REACT_APP_SITE_KEY}
             onChange={handleToken}`
             onExpire={handleExpire}
           /> */}
 
-              <Recaptcha
-                onCaptchaChange={handleCaptchaChange}
-                onCaptchaExpire={handleCaptchaExpire}
-              />
-            </Grid>
-            <Button
-              type="submit"
-              fullWidth
-              variant="contained"
-              sx={{ mt: 3, mb: 2 }}
-              // disabled={!isCaptchaVerified}
-              disabled={!formValues.token}
-            >
-              Sign Up
-            </Button>
-            <Grid container justifyContent="flex-end">
-              <Grid item>
-                <Link href="login" variant="body2">
-                  Already have an account? Sign in
-                </Link>
-              </Grid>
-            </Grid>
-          </Box>
-        </Box>
-        <Copyright sx={{ mt: 5 }} />
-      </Container>
-      <Container>
-        {/* <ReCAPTCHA
+                  <Recaptcha
+                    onCaptchaChange={handleCaptchaChange}
+                    onCaptchaExpire={handleCaptchaExpire}
+                  />
+                </Grid>
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="contained"
+                  sx={{ mt: 3, mb: 2 }}
+                  // disabled={!isCaptchaVerified}
+                  disabled={!formValues.token}
+                >
+                  Sign Up
+                </Button>
+                <Grid container justifyContent="flex-end">
+                  <Grid item>
+                    <Link href="login" variant="body2">
+                      Already have an account? Sign in
+                    </Link>
+                  </Grid>
+                </Grid>
+              </Box>
+            </Box>
+            <Copyright sx={{ mt: 5 }} />
+          </Container>
+          <Container>
+            {/* <ReCAPTCHA
         sitekey="YOUR-SITE-KEY"
         onChange={onChange}
       /> */}
-      </Container>
-    </ThemeProvider>
+          </Container>
+        </ThemeProvider>
+      )}
+    </>
   );
 }
