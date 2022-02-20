@@ -96,7 +96,7 @@ export default function SignUp(props) {
     // }
 
     if (validate()) {
-      console.log(formValues);
+      // console.log(formValues);
       axios
         .post(
           "https://phpbackend.azurewebsites.net/php-login-registration-api/register.php",
@@ -139,6 +139,12 @@ export default function SignUp(props) {
               setErrors({
                 ...errors,
                 userName: errorMessage,
+              });
+            }
+            if (errorMessage.includes("reCAPTCHA")) {
+              setErrors({
+                ...errors,
+                invalidRecaptcha: errorMessage,
               });
             }
           }
@@ -206,6 +212,7 @@ export default function SignUp(props) {
 
     // temp.industryOrSector=formValues.industryOrSector?"":"Industry or Sector is required"
     // temp.role=formValues.role?"":"Role is required"
+
     console.log("temp:", { ...temp });
     setErrors({
       ...temp,
@@ -220,6 +227,10 @@ export default function SignUp(props) {
     setFormValues((currentForm) => {
       return { ...currentForm, token };
     });
+    setErrors({
+      ...errors,
+      invalidRecaptcha: "",
+    });
 
     console.log("Captcha value:", token);
   };
@@ -227,6 +238,10 @@ export default function SignUp(props) {
     console.log("Captcha expired");
     setFormValues((currentForm) => {
       return { ...currentForm, token: null };
+    });
+    setErrors({
+      ...errors,
+      invalidRecaptcha: "",
     });
   };
 
@@ -506,6 +521,13 @@ export default function SignUp(props) {
                     onCaptchaExpire={handleCaptchaExpire}
                   />
                 </Grid>
+                <TextField
+                  variant="standard"
+                  InputProps={{ disableUnderline: true }}
+                  disabled
+                  error={errors.invalidRecaptcha ? true : false}
+                  helperText={errors.invalidRecaptcha}
+                />
                 <Button
                   type="submit"
                   fullWidth

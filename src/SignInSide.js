@@ -19,6 +19,7 @@ import AutoFixOffSharp from "@mui/icons-material/AutoFixOffSharp";
 //import THRIVELogo from './TP_logo_trans.png';
 import axios from "axios";
 import { useHistory } from "react-router-dom";
+import { Recaptcha } from "./Recaptcha";
 
 function Copyright(props) {
   return (
@@ -44,13 +45,15 @@ export default function SignInSide() {
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
   const [errors, setErrors] = React.useState({});
+  const [stayLoggedin, setStayloggedin] = React.useState(false);
   const [invalidDetails, setInvalidDetails] = React.useState("");
+  const [reCaptchaToken, setRecaptchaToken] = React.useState("");
   const history = useHistory();
   const validate = () => {
     const temp = {};
     temp.email = email ? "" : "Email is required";
     temp.password = password ? "" : "Password is required";
-    console.log("temp:", { ...temp });
+    //console.log("temp:", { ...temp });
     setErrors({
       ...temp,
     });
@@ -60,9 +63,33 @@ export default function SignInSide() {
     const { name, value } = e.target;
     if (name === "email") setEmail(value);
     if (name === "password") setPassword(value);
+    if (name === "stayLoggedin") setStayloggedin(e.target.checked);
     setErrors({
       ...errors,
       [name]: "",
+    });
+  };
+  const handleCaptchaChange = (token) => {
+    // setFormValues((currentForm) => {
+    //   return { ...currentForm, token };
+    // });
+    setRecaptchaToken(token);
+    setErrors({
+      ...errors,
+      invalidRecaptcha: "",
+    });
+
+    //console.log("Captcha value in login :", token);
+  };
+  const handleCaptchaExpire = () => {
+    //console.log("Captcha expired");
+    // setFormValues((currentForm) => {
+    //   return { ...currentForm, token: null };
+    // });
+    setRecaptchaToken(null);
+    setErrors({
+      ...errors,
+      invalidRecaptcha: "",
     });
   };
   const handleSubmit = (event) => {
@@ -74,8 +101,9 @@ export default function SignInSide() {
     //   password: data.get("password"),
     // });
     if (validate()) {
-      console.log("Email:", email);
-      console.log("Password:", password);
+      // console.log("Email:", email);
+      // console.log("Password:", password);
+      // console.log("stayloggedin:", stayLoggedin);
       axios
         .post(
           "https://phpbackend.azurewebsites.net/php-login-registration-api/login.php",
@@ -84,22 +112,48 @@ export default function SignInSide() {
             params: {
               username: email,
               password,
+              token: reCaptchaToken,
             },
           }
         )
         .then((response) => {
           if (response.data.success) {
             console.log("longin success:", response);
+            const { token } = response.data;
+            if (stayLoggedin) {
+              //const token = "token test";
+              localStorage.setItem("token", token);
+              localStorage.setItem("isLoggedin", true);
+              // console.log(
+              //   "token from local storage:",
+              //   localStorage.getItem("token")
+              // );
+            }
+
             history.push("/dashboard");
             // <Redirect to="/dashboard" />;
           } else {
             console.log("login failed", response);
+
             // setInvalidDetails("Invalid Email or Password");
             // errors.invalid = "Invalid Email or Password";
-            setErrors({
-              ...errors,
-              invalid: "Invalid Email or Password",
-            });
+            const errorMessage = response.data.message;
+            if (
+              errorMessage.includes("password") ||
+              errorMessage.includes("mail")
+            ) {
+              setErrors({
+                ...errors,
+                invalid: "Invalid Email or Password",
+              });
+            }
+            if (errorMessage.includes("reCAPTCHA")) {
+              setErrors({
+                ...errors,
+                invalidRecaptcha: errorMessage,
+              });
+            }
+
             // const errorMessage = response.data.message;
             // if (errorMessage.includes("password")) {
             //   setErrors({
@@ -153,7 +207,7 @@ export default function SignInSide() {
                 // sx={{ width: "100%", height: "50%", position: "absolute" }}
               >
                 <Typography variant="h3" fontWeight={800} fontSize="33px">
-                  THERE ARE NO SUSTAINABLE ENTITIES ON AN UNSUSTAINABLE EARTH
+                  "THERE ARE NO SUSTAINABLE ENTITIES ON AN UNSUSTAINABLE EARTH"
                 </Typography>
                 <Typography
                   component="h6"
@@ -249,9 +303,23 @@ export default function SignInSide() {
                     helperText={errors.password}
                   />
                   <FormControlLabel
-                    control={<Checkbox value="remember" color="primary" />}
+                    control={<Checkbox value="stayLoggedin" color="primary" />}
                     label="Stay logged in"
+                    name="stayLoggedin"
+                    onChange={handleInputChange}
                   />
+                  <Grid item xs={12} marginTop="20px">
+                    {/* <ReCaptchaV2 }
+            sitekey={process.env.REACT_APP_SITE_KEY}
+            onChange={handleToken}`
+            onExpire={handleExpire}
+          /> */}
+
+                    <Recaptcha
+                      onCaptchaChange={handleCaptchaChange}
+                      onCaptchaExpire={handleCaptchaExpire}
+                    />
+                  </Grid>
                   <Button
                     type="submit"
                     fullWidth
