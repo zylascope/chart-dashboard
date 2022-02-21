@@ -104,6 +104,8 @@ export default function SignInSide() {
       // console.log("Email:", email);
       // console.log("Password:", password);
       // console.log("stayloggedin:", stayLoggedin);
+      // const s = stayLoggedin ? "on" : "";
+      // console.log("s:", s);
       axios
         .post(
           "https://phpbackend.azurewebsites.net/php-login-registration-api/login.php",
@@ -112,7 +114,7 @@ export default function SignInSide() {
             params: {
               username: email,
               password,
-              token: reCaptchaToken,
+              reCAPTCHA_token: reCaptchaToken,
               stayloggedin: stayLoggedin ? "on" : "",
             },
           }
@@ -141,7 +143,8 @@ export default function SignInSide() {
             const errorMessage = response.data.message;
             if (
               errorMessage.includes("password") ||
-              errorMessage.includes("mail")
+              errorMessage.includes("mail") ||
+              errorMessage.includes("Password")
             ) {
               setErrors({
                 ...errors,
@@ -326,6 +329,7 @@ export default function SignInSide() {
                     fullWidth
                     variant="contained"
                     sx={{ mt: 3, mb: 2 }}
+                    disabled={!reCaptchaToken}
                   >
                     Sign In
                   </Button>
