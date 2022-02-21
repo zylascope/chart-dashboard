@@ -519,15 +519,22 @@ export default function SignUp(props) {
                   <Recaptcha
                     onCaptchaChange={handleCaptchaChange}
                     onCaptchaExpire={handleCaptchaExpire}
+                    // error={errors.reCAPTCHA_token ? true : false}
+                    // helperText={errors.reCAPTCHA_token}
                   />
                 </Grid>
-                <TextField
+                {errors.invalidRecaptcha ? (
+                  <Alert severity="error">{errors.invalidRecaptcha}</Alert>
+                ) : (
+                  ""
+                )}
+                {/* <TextField
                   variant="standard"
                   InputProps={{ disableUnderline: true }}
                   disabled
                   error={errors.invalidRecaptcha ? true : false}
                   helperText={errors.invalidRecaptcha}
-                />
+                /> */}
                 <Button
                   type="submit"
                   fullWidth

@@ -20,6 +20,7 @@ import AutoFixOffSharp from "@mui/icons-material/AutoFixOffSharp";
 import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Recaptcha } from "./Recaptcha";
+import Alert from "@mui/material/Alert";
 
 function Copyright(props) {
   return (
@@ -66,7 +67,7 @@ export default function SignInSide() {
     if (name === "stayLoggedin") setStayloggedin(e.target.checked);
     setErrors({
       ...errors,
-      [name]: "",
+      invalid: "",
     });
   };
   const handleCaptchaChange = (token) => {
@@ -272,13 +273,18 @@ export default function SignInSide() {
                   onSubmit={handleSubmit}
                   sx={{ mt: 1 }}
                 >
-                  <TextField
+                  {/* <TextField
                     variant="standard"
                     InputProps={{ disableUnderline: true }}
                     disabled
                     error={errors.invalid ? true : false}
                     helperText={errors.invalid}
-                  />
+                  /> */}
+                  {errors.invalid ? (
+                    <Alert severity="error">{errors.invalid}</Alert>
+                  ) : (
+                    ""
+                  )}
                   <TextField
                     margin="normal"
                     required
@@ -324,6 +330,19 @@ export default function SignInSide() {
                       onCaptchaExpire={handleCaptchaExpire}
                     />
                   </Grid>
+                  {/* <TextField
+                    variant="standard"
+                    InputProps={{ disableUnderline: true }}
+                    disabled
+                    hidden
+                    error={errors.invalidRecaptcha ? true : false}
+                    helperText={errors.invalidRecaptcha}
+                  /> */}
+                  {errors.invalidRecaptcha ? (
+                    <Alert severity="error">{errors.invalidRecaptcha}</Alert>
+                  ) : (
+                    ""
+                  )}
                   <Button
                     type="submit"
                     fullWidth
