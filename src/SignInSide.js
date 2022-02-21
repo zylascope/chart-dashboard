@@ -113,6 +113,7 @@ export default function SignInSide() {
               username: email,
               password,
               token: reCaptchaToken,
+              stayloggedin: stayLoggedin ? "on" : "",
             },
           }
         )
