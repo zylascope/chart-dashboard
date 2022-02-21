@@ -1,10 +1,5 @@
-import React from "react";
-import {
-  BrowserRouter as Router,
-  Switch,
-  Route,
-  Link
-} from "react-router-dom";
+import React, { useEffect } from "react";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Dashboard from "./Dashboard";
 
@@ -12,6 +7,12 @@ import SignInSide from "./SignInSide";
 import SignUp from "./SignUp";
 
 export default function App() {
+  const token = "";
+  useEffect(() => {
+    if (localStorage.getItem("token")) {
+      localStorage.setItem("isLoggedin", true);
+    }
+  });
   return (
     <Router>
       <div>
@@ -35,7 +36,7 @@ export default function App() {
             </li>
           </ul>
           */}
-        </nav> 
+        </nav>
 
         {/* A <Switch> looks through its children <Route>s and
             renders the first one that matches the current URL. */}
@@ -56,8 +57,8 @@ export default function App() {
             <SignInSide />
           </Route>
           <Route path="/">
-          <SignInSide />
-          {/*   <Home /> */}
+            <SignInSide />
+            {/*   <Home /> */}
           </Route>
         </Switch>
       </div>
