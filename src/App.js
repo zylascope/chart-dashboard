@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 import Dashboard from "./Dashboard";
+import { ResetPassword } from "./ResetPassword";
 
 import SignInSide from "./SignInSide";
 import SignUp from "./SignUp";
@@ -48,7 +49,7 @@ export default function App() {
             <Dashboard />
           </Route>
           <Route path="/get-new-password">
-            <GetNewPassword />
+            <ResetPassword />
           </Route>
           <Route path="/register">
             <SignUp />
