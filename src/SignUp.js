@@ -73,6 +73,7 @@ export default function SignUp(props) {
   const [formValues, setFormValues] = React.useState(defaultValues);
   const [errors, setErrors] = React.useState({});
   const [success, setSuccess] = React.useState(false);
+  const [recaptchaRef, setRecaptchaRef] = React.useState("");
   // const[isCaptchaVerified, setIsCapthaVerified]= React.useState(false);
   const handleSubmit = async (event) => {
     event.preventDefault();
@@ -119,7 +120,11 @@ export default function SignUp(props) {
             setSuccess(true);
           } else {
             console.log("Not registered", response);
-
+            recaptchaRef.reset();
+            setFormValues({
+              ...formValues,
+              token: "",
+            });
             //props.history.push("/login");
             console.log("Not registered error message", response.data.message);
             const errorMessage = response.data.message;
@@ -223,7 +228,7 @@ export default function SignUp(props) {
   //   console.log('Captcha value:',value);
   //   setIsCapthaVerified(true);
   // }
-  const handleCaptchaChange = (token) => {
+  const handleCaptchaChange = (token, recaptchaRef) => {
     setFormValues((currentForm) => {
       return { ...currentForm, token };
     });
@@ -231,7 +236,7 @@ export default function SignUp(props) {
       ...errors,
       invalidRecaptcha: "",
     });
-
+    setRecaptchaRef(recaptchaRef);
     console.log("Captcha value:", token);
   };
   const handleCaptchaExpire = () => {

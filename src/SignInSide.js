@@ -49,6 +49,7 @@ export default function SignInSide() {
   const [stayLoggedin, setStayloggedin] = React.useState(false);
   const [invalidDetails, setInvalidDetails] = React.useState("");
   const [reCaptchaToken, setRecaptchaToken] = React.useState("");
+  const [recaptchaRef, setRecaptchaRef] = React.useState("");
   const history = useHistory();
   const validate = () => {
     const temp = {};
@@ -70,15 +71,22 @@ export default function SignInSide() {
       invalid: "",
     });
   };
-  const handleCaptchaChange = (token) => {
+  // const handleCaptchaReset = (e) => {
+  //   console.log("in handlecaptcharesetne:", e);
+  //   setRecaptchaToken("");
+  // };
+  const handleCaptchaChange = (token, recaptchaRef) => {
     // setFormValues((currentForm) => {
     //   return { ...currentForm, token };
     // });
+    // console.log("recaptchaRef in handle captcha change:", recaptchaRef);
+    // console.log("widgetId:", recaptchaRef._widgetId);
     setRecaptchaToken(token);
     setErrors({
       ...errors,
       invalidRecaptcha: "",
     });
+    setRecaptchaRef(recaptchaRef);
 
     //console.log("Captcha value in login :", token);
   };
@@ -137,8 +145,14 @@ export default function SignInSide() {
             history.push("/dashboard");
             // <Redirect to="/dashboard" />;
           } else {
-            console.log("login failed", response);
+            // console.log("login failed", response);
+            // console.log("captcah token:", reCaptchaToken);
+            // // recaptchaRef.current?.reset(recaptchaRef._widgetId);
+            // console.log("calling capthca reset....");
+            recaptchaRef.reset();
+            setRecaptchaToken("");
 
+            //console.log(" after reset captcah token:", reCaptchaToken);
             // setInvalidDetails("Invalid Email or Password");
             // errors.invalid = "Invalid Email or Password";
             const errorMessage = response.data.message;
