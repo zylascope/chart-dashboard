@@ -132,15 +132,14 @@ export default function SignInSide() {
           if (response.data.success) {
             console.log("longin success:", response);
             const { token } = response.data;
-            if (stayLoggedin) {
-              //const token = "token test";
-              localStorage.setItem("token", token);
-              localStorage.setItem("isLoggedin", true);
-              // console.log(
-              //   "token from local storage:",
-              //   localStorage.getItem("token")
-              // );
-            }
+            // if (stayLoggedin) {
+            //const token = "token test";
+            localStorage.setItem("token", token);
+            localStorage.setItem("isLoggedin", true);
+            // console.log(
+            //   "token from local storage:",
+            //   localStorage.getItem("token")
+            // );
 
             history.push("/dashboard");
             // <Redirect to="/dashboard" />;
