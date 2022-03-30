@@ -1,7 +1,9 @@
 # Ciambella Chart Plugin for React-chart-js-2
+
 # [![Netlify Status](https://api.netlify.com/api/v1/badges/51e85319-0e33-4e53-9343-637292ffaa60/deploy-status)](https://app.netlify.com/sites/thrivability-calculator/deploys)
 
 ### Production:
+
 https://thrive-platform-app.netlify.app/
 This project is a development environment for developing Ciambella Chart Plugin for React-chart-js-2. It features a Single Page Application prototype of THRIVE platform V3.
 

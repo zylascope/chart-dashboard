@@ -1,11 +1,11 @@
-import * as React from 'react';
-import Link from '@mui/material/Link';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Title from './Title';
+import * as React from "react";
+import Link from "@mui/material/Link";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Title from "./Title";
 
 // Generate Order Data
 function createData(id, date, name, shipTo, paymentMethod, amount) {
@@ -13,38 +13,10 @@ function createData(id, date, name, shipTo, paymentMethod, amount) {
 }
 
 const rows = [
-  createData(
-    0,
-    '50',
-    '1',
-    '11',
-    '0.01',
-    '0.001',
-  ),
-  createData(
-    0,
-    '60',
-    '1',
-    '10',
-    '0.01',
-    '1',
-  ),
-  createData(
-    0,
-    '65',
-    '1',
-    '-2',
-    '19',
-    '-.0181',
-  ),
-  createData(
-    0,
-    '22.5',
-    '1',
-    '19',
-    '0.1',
-    '1.5',
-  ),
+  createData(0, "50", "1", "11", "0.01", "0.001"),
+  createData(0, "60", "1", "10", "0.01", "1"),
+  createData(0, "65", "1", "-2", "19", "-.0181"),
+  createData(0, "22.5", "1", "19", "0.1", "1.5"),
 ];
 
 function preventDefault(event) {
@@ -77,7 +49,7 @@ export default function Orders() {
           ))}
         </TableBody>
       </Table>
-{/*       <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
+      {/*       <Link color="primary" href="#" onClick={preventDefault} sx={{ mt: 3 }}>
       </Link> */}
     </React.Fragment>
   );
