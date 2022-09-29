@@ -21,6 +21,7 @@ import axios from "axios";
 import { useHistory } from "react-router-dom";
 import { Recaptcha } from "./Recaptcha";
 import Alert from "@mui/material/Alert";
+import { serverDomain } from "./config";
 
 function Copyright(props) {
   return (
@@ -117,7 +118,7 @@ export default function SignInSide() {
       // console.log("s:", s);
       axios
         .post(
-          "https://phpbackend.azurewebsites.net/php-login-registration-api/login.php",
+          serverDomain+"/php-login-registration-api/login.php",
           null,
           {
             params: {
