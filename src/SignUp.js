@@ -31,6 +31,7 @@ import axios from "axios";
 import { Redirect } from "react-router-dom";
 import { SuccessRegister } from "./SuccessRegister";
 //import ReCaptchaV2 from 'react-google-recaptcha';
+import { serverDomain } from "./config";
 
 function Copyright(props) {
   return (
@@ -100,7 +101,7 @@ export default function SignUp(props) {
       // console.log(formValues);
       axios
         .post(
-          "https://phpbackend.azurewebsites.net/php-login-registration-api/register.php",
+          serverDomain+"/php-login-registration-api/register.php",
           null,
           {
             params: {
