@@ -15,7 +15,7 @@ export default function App() {
     }
   });
   return (
-    <Router basename={"/v3-1/build"}>
+    <Router>
       <div>
         <nav>
           {/*
