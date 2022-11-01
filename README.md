@@ -1,8 +1,4 @@
-# Ciambella Chart Plugin for React-chart-js-2
 
-This project is a development environment for developing Ciambella Chart Plugin for React-chart-js-2. It features a Single Page Application prototype of THRIVE platform V3.
-
-This is the latest, most up to date version of the cc plugin for react.
 
 # Getting Started with Create React App
 
