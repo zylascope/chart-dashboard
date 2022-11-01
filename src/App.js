@@ -1,3 +1,10 @@
+/**
+ * chart-dashboard - A sample app to show the problem I'm having with chart.js and react.
+ * (c) 2019 - 2020 Geoff Williams - THRIVE Project
+ * 
+ */
+
+
 import React, { useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
